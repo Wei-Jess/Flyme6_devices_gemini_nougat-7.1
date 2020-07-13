@@ -309,6 +309,25 @@
 # instance fields
 .field private mANBIEnabled:Z
 
+.field mFlymeBootLayout:Landroid/view/View;
+
+.field mFlymeBootMsgBar:Landroid/widget/ProgressBar;
+
+.field mFlymeBootMsgText:Landroid/widget/TextView;
+
+.field mFlymeBootMsgTitle:Landroid/widget/TextView;
+
+.field mFlymeInputMethodWindow:Landroid/view/WindowManagerPolicy$WindowState;
+
+.field mFlymeLastLightNavigationBar:Z
+
+.field mFlymeLastLightStatusBar:Z
+
+.field mFlymeLastStatusBarColor:I
+
+.field mFlymePw:Lcom/android/server/policy/MzPhoneWindowManager;
+
+.field mFlymeStatusBarService:Lmeizu/statusbar/IFlymeStatusBarService;
 .field mAccelerometerDefault:Z
 
 .field mAccessibilityManager:Landroid/view/accessibility/AccessibilityManager;
@@ -7555,6 +7574,7 @@
     iput v0, p0, Lcom/android/server/policy/PhoneWindowManager;->mCurBottom:I
 
     :cond_3
+    invoke-static/range {p0 .. p1}, Lcom/android/server/policy/PhoneWindowManager$FlymeInjector;->setFlymeInputMethodWindow(Lcom/android/server/policy/PhoneWindowManager;Landroid/view/WindowManagerPolicy$WindowState;)V
     return-void
 .end method
 
@@ -12012,6 +12032,8 @@
 
     .line 8730
     .local v10, "needsMenu":Z
+    invoke-static/range {p0 .. p0}, Lcom/android/server/policy/PhoneWindowManager$FlymeInjector;->setFlymeStatusBarTheme(Lcom/android/server/policy/PhoneWindowManager;)V
+
     if-nez v11, :cond_b
 
     if-nez v13, :cond_b
@@ -21579,6 +21601,8 @@
 
     .line 2271
     invoke-virtual {v3, v4}, Landroid/view/WindowManagerInternal;->registerAppTransitionListener(Landroid/view/WindowManagerInternal$AppTransitionListener;)V
+    
+    invoke-static/range {p0 .. p1}, Lcom/android/server/policy/PhoneWindowManager$FlymeInjector;->initFlymeExtraFields(Lcom/android/server/policy/PhoneWindowManager;Landroid/content/Context;)V
 
     .line 2274
     move-object/from16 v0, p0
@@ -24416,6 +24440,17 @@
 
     .line 4157
     :cond_59
+    invoke-static/range {p0 .. p2}, Lcom/android/server/policy/PhoneWindowManager$FlymeInjector;->handleLongPressOnHeadSetIfNeeded(Lcom/android/server/policy/PhoneWindowManager;Landroid/view/WindowManagerPolicy$WindowState;Landroid/view/KeyEvent;)Z
+
+    move-result v4
+
+    if-eqz v4, :cond_flyme_0
+
+    const-wide/16 v4, -0x1
+
+    return-wide v4
+
+    :cond_flyme_0
     move-object/from16 v0, p0
 
     iget-boolean v4, v0, Lcom/android/server/policy/PhoneWindowManager;->mSearchKeyShortcutPending:Z
@@ -26817,7 +26852,7 @@
     :cond_42
     and-int/lit8 v5, v29, 0x1
 
-    if-nez v5, :cond_20
+    if-nez v5, :cond_flyme_0
 
     .line 6955
     move-object/from16 v0, p0
@@ -26855,6 +26890,18 @@
 
     .line 6959
     invoke-virtual/range {v25 .. v25}, Landroid/os/Message;->sendToTarget()V
+    
+    :cond_flyme_0
+
+    move-object/from16 v0, p0
+
+    move-object/from16 v1, p1
+
+    move/from16 v2, v29
+
+    invoke-static {v0, v1, v2}, Lcom/android/server/policy/PhoneWindowManager$FlymeInjector;->interceptFlymeKeyBeforeQueueing(Lcom/android/server/policy/PhoneWindowManager;Landroid/view/KeyEvent;I)I
+
+    move-result v29
 
     goto/16 :goto_f
 

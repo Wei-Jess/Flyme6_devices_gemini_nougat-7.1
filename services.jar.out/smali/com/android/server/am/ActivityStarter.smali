@@ -4940,6 +4940,12 @@
     :goto_5
     if-eqz v11, :cond_15
 
+    invoke-static/range {p0 .. p0}, Lcom/android/server/am/ActivityStarter$FlymeInjector;->isFlymeAccessApplication(Lcom/android/server/am/ActivityStarter;)Z
+
+    move-result v2
+
+    if-nez v2, :cond_flyme_0
+    
     move-object/from16 v0, v20
 
     iget-object v2, v0, Lcom/android/server/am/ActivityRecord;->task:Lcom/android/server/am/TaskRecord;
@@ -5053,6 +5059,8 @@
     return v2
 
     :cond_15
+    :cond_flyme_0
+
     const/16 v16, 0x0
 
     .local v16, "newTask":Z
